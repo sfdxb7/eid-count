@@ -25,7 +25,6 @@ export default function EidCalculator() {
   const [customAmount, setCustomAmount] = useState<string>('');
   const [mounted, setMounted] = useState(false);
 
-  // Load state from localStorage on mount
   useEffect(() => {
     setMounted(true);
     try {
@@ -33,12 +32,9 @@ export default function EidCalculator() {
       const savedHistory = localStorage.getItem('eid_history');
       if (savedTotal) setTotal(parseFloat(savedTotal) || 0);
       if (savedHistory) setHistory(JSON.parse(savedHistory) || []);
-    } catch (e) {
-      // Fail silently for storage errors
-    }
+    } catch (e) {}
   }, []);
 
-  // Sync state to localStorage
   useEffect(() => {
     if (!mounted) return;
     localStorage.setItem('eid_total', total.toString());
@@ -74,58 +70,61 @@ export default function EidCalculator() {
   if (!mounted) return <div className="min-h-screen bg-background" />;
 
   return (
-    <div className="max-w-md mx-auto px-6 pt-2 pb-20 space-y-8 font-body">
-      <header className="space-y-4">
-        <div className="bg-accent retro-border retro-shadow p-2 overflow-hidden rotate-[-1deg]">
-          <div className="animate-marquee whitespace-nowrap text-xs font-bold uppercase tracking-tighter">
-            EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK •
-          </div>
+    <div className="max-w-md mx-auto px-4 flex flex-col font-body" style={{ height: '100dvh', maxHeight: '100dvh', overflow: 'hidden' }}>
+      {/* Marquee banner */}
+      <div className="bg-accent retro-border retro-shadow p-1.5 overflow-hidden rotate-[-1deg] mt-2 flex-shrink-0">
+        <div className="animate-marquee whitespace-nowrap text-xs font-bold uppercase tracking-tighter">
+          EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK • EID MUBARAK •
         </div>
-        <div className="flex items-center justify-between">
-          <h1 className="text-5xl font-black text-foreground uppercase tracking-tighter italic">
-            Eid<br /><span className="text-primary retro-shadow-sm" style={{ WebkitTextStroke: '2px black' }}>Count</span>
-          </h1>
-          <div className="bg-secondary retro-border retro-shadow p-3 rotate-[5deg] flex items-center justify-center min-w-[3.5rem] h-14">
-            <span className="text-white font-black text-3xl select-none" style={{ WebkitTextStroke: '1px black' }}>د.إ</span>
-          </div>
-        </div>
-      </header>
+      </div>
 
-      <Card className="bg-primary retro-border retro-shadow transform transition-all hover:translate-x-[-2px] hover:translate-y-[-2px]">
-        <CardContent className="pt-8 pb-10 text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-2 opacity-10">
-            <Coins className="h-24 w-24 rotate-12" />
+      {/* Header */}
+      <div className="flex items-center justify-between mt-2 flex-shrink-0">
+        <h1 className="text-4xl font-black text-foreground uppercase tracking-tighter italic leading-none">
+          Eid<br /><span className="text-primary retro-shadow-sm" style={{ WebkitTextStroke: '2px black' }}>Count</span>
+        </h1>
+        <div className="bg-secondary retro-border retro-shadow p-2 rotate-[5deg] flex items-center justify-center min-w-[3rem] h-12">
+          <span className="text-white font-black text-2xl select-none" style={{ WebkitTextStroke: '1px black' }}>د.إ</span>
+        </div>
+      </div>
+
+      {/* Total Card */}
+      <Card className="bg-primary retro-border retro-shadow mt-3 flex-shrink-0">
+        <CardContent className="py-4 text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-1 opacity-10">
+            <Coins className="h-16 w-16 rotate-12" />
           </div>
-          <p className="text-sm uppercase tracking-widest font-black mb-2 flex items-center justify-center gap-2">
-            <Sparkles className="h-4 w-4" /> My Total Eideya <Sparkles className="h-4 w-4" />
+          <p className="text-xs uppercase tracking-widest font-black mb-1 flex items-center justify-center gap-1">
+            <Sparkles className="h-3 w-3" /> My Total Eideya <Sparkles className="h-3 w-3" />
           </p>
-          <div className="text-7xl font-black flex items-center justify-center gap-1 font-mono tracking-tighter">
-            <span className="text-2xl mt-4">AED</span>
+          <div className="text-5xl font-black flex items-center justify-center gap-1 font-mono tracking-tighter">
+            <span className="text-lg mt-2">AED</span>
             <span>{total.toLocaleString()}</span>
           </div>
         </CardContent>
       </Card>
 
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-black uppercase flex items-center gap-2">
-            <Plus className="h-6 w-6 stroke-[3px]" /> Quick Add
+      {/* Quick Add */}
+      <div className="mt-3 flex-shrink-0">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base font-black uppercase flex items-center gap-1">
+            <Plus className="h-4 w-4 stroke-[3px]" /> Quick Add
           </h2>
           <Button 
             onClick={() => handleSubtractAmount(5)}
             variant="outline"
-            className="h-10 px-4 bg-destructive text-white rounded-none retro-border retro-shadow-sm retro-shadow-active font-black"
+            className="h-8 px-3 bg-destructive text-white rounded-none retro-border retro-shadow-sm retro-shadow-active font-black text-sm"
           >
-            <Minus className="h-4 w-4 mr-1 stroke-[3px]" /> 5
+            <Minus className="h-3 w-3 mr-1 stroke-[3px]" /> 5
           </Button>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2">
           {QUICK_AMOUNTS.map((amount) => (
             <Button
               key={amount}
               onClick={() => handleAddAmount(amount)}
               variant="outline"
-              className="h-20 text-2xl font-black rounded-none retro-border retro-shadow retro-shadow-active transition-all bg-white hover:bg-white active:bg-white"
+              className="h-14 text-xl font-black rounded-none retro-border retro-shadow retro-shadow-active transition-all bg-white hover:bg-white active:bg-white"
             >
               {amount}
             </Button>
@@ -133,6 +132,7 @@ export default function EidCalculator() {
         </div>
       </div>
 
+      {/* Custom Amount */}
       <form onSubmit={(e) => {
         e.preventDefault();
         const val = parseFloat(customAmount);
@@ -140,36 +140,40 @@ export default function EidCalculator() {
           handleAddAmount(val);
           setCustomAmount('');
         }
-      }} className="space-y-4">
-        <h2 className="text-xl font-black uppercase flex items-center gap-2">
-          <Banknote className="h-6 w-6 stroke-[3px]" /> Custom Eideya
+      }} className="mt-3 flex-shrink-0">
+        <h2 className="text-base font-black uppercase flex items-center gap-1 mb-2">
+          <Banknote className="h-4 w-4 stroke-[3px]" /> Custom Eideya
         </h2>
-        <div className="flex gap-3">
+        <div className="flex gap-2">
           <Input
             type="number"
             placeholder="0.00"
             value={customAmount}
             onChange={(e) => setCustomAmount(e.target.value)}
-            className="h-14 text-xl font-bold rounded-none border-2 border-black focus-visible:ring-primary retro-shadow-sm"
+            className="h-11 text-lg font-bold rounded-none border-2 border-black focus-visible:ring-primary retro-shadow-sm"
           />
           <Button 
             type="submit" 
             disabled={!customAmount}
-            className="h-14 px-8 bg-secondary text-white hover:bg-secondary/90 rounded-none font-black text-lg retro-border retro-shadow retro-shadow-active"
+            className="h-11 px-6 bg-secondary text-white hover:bg-secondary/90 rounded-none font-black text-base retro-border retro-shadow retro-shadow-active"
           >
             ADD
           </Button>
         </div>
       </form>
 
-      <div className="flex items-center justify-between pt-6">
+      {/* Spacer */}
+      <div className="flex-grow" />
+
+      {/* Bottom actions */}
+      <div className="flex items-center justify-between pb-4 flex-shrink-0">
         <Button
           variant="ghost"
           onClick={handleUndo}
           disabled={history.length === 0}
-          className="font-bold underline decoration-4 decoration-primary underline-offset-4 hover:bg-transparent"
+          className="font-bold underline decoration-4 decoration-primary underline-offset-4 hover:bg-transparent text-sm"
         >
-          <RotateCcw className="h-5 w-5 mr-2" /> UNDO LAST
+          <RotateCcw className="h-4 w-4 mr-1" /> UNDO LAST
         </Button>
 
         <AlertDialog>
@@ -177,9 +181,9 @@ export default function EidCalculator() {
             <Button
               variant="ghost"
               disabled={total === 0}
-              className="text-destructive font-black uppercase hover:bg-transparent"
+              className="text-destructive font-black uppercase hover:bg-transparent text-sm"
             >
-              <Trash2 className="h-5 w-5 mr-2" /> RESET
+              <Trash2 className="h-4 w-4 mr-1" /> RESET
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="rounded-none border-4 border-black retro-shadow bg-background">
