@@ -204,7 +204,7 @@ export default function EidCalculator() {
       {/* Credit */}
       <div className="text-center pb-3 flex-shrink-0">
         <p className="text-xs font-bold text-stone-400 tracking-wide">Vibe Coded By: <a href="mailto:a.falasi77@gmail.com" className="text-foreground font-black underline decoration-2 decoration-primary underline-offset-2 hover:text-primary transition-colors">Abdulla Al Falasi</a></p>
-        <p className="text-[10px] text-stone-300 mt-1 italic">Even kids can vibe code ✨</p>
+        <p className="text-[10px] text-stone-400 mt-1 italic font-bold">Even kids can vibe code ✨</p>
       </div>
     </div>
   );
