@@ -162,11 +162,8 @@ export default function EidCalculator() {
         </div>
       </form>
 
-      {/* Spacer */}
-      <div className="flex-grow" />
-
-      {/* Bottom actions */}
-      <div className="flex items-center justify-between pb-4 flex-shrink-0">
+      {/* Actions - moved up, right after custom amount */}
+      <div className="flex items-center justify-between mt-4 flex-shrink-0">
         <Button
           variant="ghost"
           onClick={handleUndo}
@@ -199,6 +196,14 @@ export default function EidCalculator() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+      </div>
+
+      {/* Spacer */}
+      <div className="flex-grow" />
+
+      {/* Credit */}
+      <div className="text-center pb-3 flex-shrink-0">
+        <p className="text-xs font-bold text-stone-400 tracking-wide">Vibe Coded By: <span className="text-foreground font-black">Abdulla Al Falasi</span></p>
       </div>
     </div>
   );
